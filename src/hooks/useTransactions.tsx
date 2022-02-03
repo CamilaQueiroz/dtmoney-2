@@ -1,5 +1,11 @@
-import { createContext, ReactNode, useEffect, useState } from "react";
-import { api } from "./services/api";
+import {
+  createContext,
+  ReactNode,
+  useEffect,
+  useState,
+  useContext,
+} from "react";
+import { api } from "../services/api";
 
 interface Transaction {
   id: number;
@@ -26,14 +32,14 @@ interface TransactionsContextData {
   createTransaction: (transaction: TransactionInput) => void;
 }
 
-export const TransactionsContext = createContext<TransactionsContextData>(
+const TransactionsContext = createContext<TransactionsContextData>(
   {} as TransactionsContextData
 );
 
 export function TransactionsProvider({ children }: TransactionProviderProps) {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
 
-  function formatData(transactions: Transaction[]) {
+  function formatPriceAndDate(transactions: Transaction[]) {
     return transactions.map((transaction) => {
       return {
         ...transaction,
@@ -49,11 +55,10 @@ export function TransactionsProvider({ children }: TransactionProviderProps) {
   }
 
   useEffect(() => {
-    console.log("chama");
     api.get("transactions").then((response) => {
       const transactions = response.data.transactions as Transaction[];
 
-      const formattedTransaction = formatData(transactions);
+      const formattedTransaction = formatPriceAndDate(transactions);
 
       setTransactions(formattedTransaction);
     });
@@ -74,8 +79,6 @@ export function TransactionsProvider({ children }: TransactionProviderProps) {
           ),
         };
 
-        console.log(formattedData);
-
         setTransactions([...transactions, formattedData]);
       });
   }
@@ -85,4 +88,9 @@ export function TransactionsProvider({ children }: TransactionProviderProps) {
       {children}
     </TransactionsContext.Provider>
   );
+}
+
+export function useTransactions() {
+  const context = useContext(TransactionsContext);
+  return context;
 }

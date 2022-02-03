@@ -13,11 +13,11 @@ createServer({
       transactions: [
         {
           id: 1,
-          title: "Freela website",
+          title: "Hermes",
           type: "deposit",
-          amount: 12000,
+          amount: 2400,
           category: "dev",
-          createdAt: new Date("2022-02-01 03:00:00"),
+          createdAt: new Date("2022-02-08 10:00:00"),
         },
         {
           id: 2,
@@ -25,7 +25,7 @@ createServer({
           type: "withdraw",
           amount: 600,
           category: "casa",
-          createdAt: new Date("2022-02-01 12:00:00"),
+          createdAt: new Date("2022-02-08 12:00:00"),
         },
       ],
     });
